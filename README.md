@@ -33,6 +33,12 @@ OneDrive 使用的是[rclone](https://github.com/rclone/rclone)，需要自行�
 
 百度云 使用的是[BaiduPCS-Go](https://github.com/qjfoidnh/BaiduPCS-Go)，需要自行配置
 
+配置完成后设置```crontab```即可使用
+
+```shell
+*/1 * * * * /bin/bash /root/bili/bili.sh >/dev/null 2>&1
+```
+
 ## 感谢
 
 [you-get](https://github.com/soimort/you-get)
