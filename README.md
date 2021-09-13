@@ -39,6 +39,22 @@ OneDrive 使用的是[rclone](https://github.com/rclone/rclone)，需要自行�
 */1 * * * * /bin/bash /root/bili/bili.sh >/dev/null 2>&1
 ```
 
+## 效果
+
+点击某一视频的收藏后开始下载
+
+![点击收藏](https://raw.githubusercontent.com/Left024/images/main/picgo20210913230146.png)
+
+![开始下载](https://raw.githubusercontent.com/Left024/images/main/picgo20210913225853.png)
+
+下载完成后通知
+
+![下载完成](https://raw.githubusercontent.com/Left024/images/main/picgo20210913225948.png)
+
+下载完成后的文件目录
+
+![文件目录](https://raw.githubusercontent.com/Left024/images/main/picgo20210913230035.png)
+
 ## 感谢
 
 [you-get](https://github.com/soimort/you-get)
