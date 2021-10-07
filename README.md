@@ -48,25 +48,25 @@ OneDrive 使用的是[rclone](https://github.com/rclone/rclone)，需要自行�
 
 点击某一视频的收藏后开始下载
 
-![点击收藏](https://raw.githubusercontent.com/Left024/images/main/picgo20210913230146.png)
+![点击收藏](https://raw.githubusercontent.com/left916/images/main/picgo/picgo20210913230146.png)
 
 邮件通知
 
-![邮件通知开始下载](https://raw.githubusercontent.com/Left024/images/main/picgo20210913225853.png)
+![邮件通知开始下载](https://raw.githubusercontent.com/left916/images/main/picgo/picgo20210913225853.png)
 
 telegram 通知（实时下载进度）
 
-![telegram 通知开始下载](https://raw.githubusercontent.com/Left024/images/main/picgo/20211004113050.png)
+![telegram 通知开始下载](https://raw.githubusercontent.com/left916/images/main/picgo/20211004113050.png)
 
 下载完成后通知
 
-![下载完成](https://raw.githubusercontent.com/Left024/images/main/picgo20210913225948.png)
+![下载完成](https://raw.githubusercontent.com/left916/images/main/picgo/picgo20210913225948.png)
 
-![telegram 通知](https://raw.githubusercontent.com/Left024/images/main/picgo/20211004113146.png)
+![telegram 通知](https://raw.githubusercontent.com/left916/images/main/picgo/20211004113146.png)
 
 下载完成后的文件目录
 
-![文件目录](https://raw.githubusercontent.com/Left024/images/main/picgo20210913230035.png)
+![文件目录](https://raw.githubusercontent.com/left916/images/main/picgo/picgo20210913230035.png)
 
 ## 感谢
 
