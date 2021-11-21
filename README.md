@@ -22,9 +22,14 @@
 新增 ```Cookies``` 检查，默认情况下当 ```Cookies``` 不可用将不会开始下载
 
 ![](https://raw.githubusercontent.com/left916/images/main/2021/10/20211110134148.png)
+
+### 2021/11/21
+
+修复视频最高清晰度为「1080P 高帧率」或「1080P 60帧」时仍然下载「1080P」的问题
+
 ## 使用
 
-脚本原理是每分钟检查 RSS，然后通过 you-get 进行下载
+脚本原理是每分钟检查 RSS，然后通过 you-get 进行下载（需要额外安装 ffmpeg，否则无法合并下载完的视频）
 
 脚本中注释已经写的很明白了，必须要修改的是```RSS地址```和```邮箱地址```，可选修改地址为```脚本存放地址```和```视频存放地址```
 
@@ -78,6 +83,8 @@ telegram 通知（实时下载进度）
 ## 感谢
 
 [you-get](https://github.com/soimort/you-get)
+
+[FFmpeg](https://github.com/FFmpeg/FFmpeg)
 
 [DanmakuFactory](https://github.com/hihkm/DanmakuFactory)
 
