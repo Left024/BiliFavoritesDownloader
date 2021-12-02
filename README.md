@@ -17,6 +17,10 @@
 
 ## 更新日志
 
+### 2021/12/02
+
+[#2](https://github.com/Left024/BiliFavoritesDownloader/issues/2)
+
 ### 2021/11/21
 
 修复视频最高清晰度为「1080P 高帧率」或「1080P 60帧」时仍然下载「1080P」的问题

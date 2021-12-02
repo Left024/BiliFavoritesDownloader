@@ -29,18 +29,29 @@ fi
 if [ ! -f "${scriptLocation}title.txt" ]; then
     echo 313340 >"${scriptLocation}"title.txt
 fi
+#如果BV记录文本不存在则创建
+if [ ! -f "${scriptLocation}BV.txt" ]; then
+    echo 313340 >"${scriptLocation}"BV.txt
+fi
 #获得之前下载过的视频标题
 oldtitle=$(cat "${scriptLocation}"title.txt)
 #获得上一个视频的时间戳（文件地址自行修改）
 olddate=$(cat "${scriptLocation}"date.txt)
+#获得上一个视频的BV号
+oldBV=$(cat "${scriptLocation}"BV.txt)
 #此处为视频存储位置，自行修改
 filename="$videoLocation$name"
+#获得视频下载链接
+sublink=${subpubdate#*<link>}
+link=${sublink%%</link>*}
+av=${link#*video/}
 #aaaaa="GMT"
 result=$(echo $pubdate | grep "GMT")
 result5=$(echo $oldtitle | grep "$name")
+result6=$(echo $oldBV | grep "$av")
 #echo $result
 #判断当前时间戳和上次记录是否相同，不同则代表收藏列表更新
-if [ "$pubdate" != "$olddate" ] && [ "$result" != "" ] && [ "$result5" = "" ]; then
+if [ "$pubdate" != "$olddate" ] && [ "$result" != "" ] && [ "$result6" = "" ]; then
     #Cookies可用性检查
     stat=$($you -i -l -c "$scriptLocation"cookies.txt https://www.bilibili.com/video/BV1fK4y1t7hj)
     substat=${stat#*quality:}
@@ -49,10 +60,11 @@ if [ "$pubdate" != "$olddate" ] && [ "$result" != "" ] && [ "$result5" = "" ]; t
     if [[ $quality =~ "4K" ]]; then
         #清空 Bilibili 文件夹
         rm -rf "$videoLocation"*
-        #获得视频下载链接
-        sublink=${subpubdate#*<link>}
-        link=${sublink%%</link>*}
-        av=${link#*video/}
+        #判断是否为重复标题
+        if [ "$result5" != "" ]; then
+            time=$(date "+%Y-%m-%d_%H:%M:%S")
+            name="$name""("$time")"
+        fi
         #获得封面图下载链接和文件名称
         subcontent=${content#*<img src=\"}
         photolink=${subcontent%%\"*}
@@ -63,6 +75,8 @@ if [ "$pubdate" != "$olddate" ] && [ "$result" != "" ] && [ "$result5" = "" ]; t
         echo $pubdate >"${scriptLocation}"date.txt
         #记录标题
         echo $name >>"${scriptLocation}"title.txt
+        #记录BV号
+        echo $av >>"${scriptLocation}"BV.txt
         #获取视频清晰度以及大小信息
         stat=$($you -i -l -c "$scriptLocation"cookies.txt $link)
         #获取最高清晰度format
