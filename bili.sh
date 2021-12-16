@@ -101,7 +101,7 @@ if [ "$pubdate" != "$olddate" ] && [ "$result" != "" ] && [ "$result6" = "" ]; t
         done
         #发送开始下载邮件（自行修改邮件地址）
         #echo "$message" | mail -s "BFD：开始下载" $mailAddress
-        curl "https://api.telegram.org/bot$telegram_bot_token/sendMessage?chat_id=$telegram_chat_id&parse_mode=html&text=<b>BFD：开始下载</b>%0A%0A$message"
+        curl -s -X POST "https://api.telegram.org/bot$telegram_bot_token/sendMessage" -d chat_id=$telegram_chat_id -d parse_mode=html -d text="<b>BFD：开始下载</b>%0A%0A$message"
         #下载视频到指定位置（视频存储位置自行修改；you-get下载B站经常会出错，所以添加了出错重试代码）
         count=1
         while true; do
@@ -132,13 +132,13 @@ if [ "$pubdate" != "$olddate" ] && [ "$result" != "" ] && [ "$result6" = "" ]; t
                 done
                 #发送下载完成邮件
                 #echo "$videomessage" | mail -s "BFD：下载完成" $mailAddress
-                curl "https://api.telegram.org/bot$telegram_bot_token/sendMessage?chat_id=$telegram_chat_id&parse_mode=html&text=<b>BFD：下载完成</b>%0A%0A$videomessage"
+                curl -s -X POST "https://api.telegram.org/bot$telegram_bot_token/sendMessage" -d chat_id=$telegram_chat_id -d parse_mode=html -d text="<b>BFD：下载完成</b>%0A%0A$videomessage"
                 #上传至OneDrive 百度云
                 /usr/bin/rclone copy /root/Bilibili OneDrive:1tb/Bilibili
                 /usr/local/bin/BaiduPCS-Go upload /root/Bilibili /
                 #发送通知
                 #echo "$title" | mail -s "BFD：上传完成" $mailAddress #邮件方式
-                curl "https://api.telegram.org/bot$telegram_bot_token/sendMessage?chat_id=$telegram_chat_id&parse_mode=html&text=<b>BFD：上传完成</b>%0A%0A$title"
+                curl -s -X POST "https://api.telegram.org/bot$telegram_bot_token/sendMessage" -d chat_id=$telegram_chat_id -d parse_mode=html -d text="<b>BFD：上传完成</b>%0A%0A$title"
                 break
             else
                 if [ "$count" != "1" ]; then
@@ -148,14 +148,14 @@ if [ "$pubdate" != "$olddate" ] && [ "$result" != "" ] && [ "$result6" = "" ]; t
                     rm -rf "$videoLocation$name"
                     #发送通知
                     #echo "$name" | mail -s "BFD：下载失败" $mailAddress  #邮件
-                    curl "https://api.telegram.org/bot$telegram_bot_token/sendMessage?chat_id=$telegram_chat_id&parse_mode=html&text=<b>BFD：下载失败</b>"
+                    curl -s -X POST "https://api.telegram.org/bot$telegram_bot_token/sendMessage" -d chat_id=$telegram_chat_id -d parse_mode=html -d text="<b>BFD：下载失败</b>"
                     exit
                 fi
             fi
         done & #如果是邮件通知，删除 & 和下面的内容(删到wait，fi保留)
 
         second="start"
-        secondResult=$(curl "https://api.telegram.org/bot$telegram_bot_token/sendMessage?chat_id=$telegram_chat_id&text=$second")
+        secondResult=$(curl -s -X POST "https://api.telegram.org/bot$telegram_bot_token/sendMessage" -d chat_id=$telegram_chat_id -d parse_mode=html -d text="$second")
         subSecondResult="${secondResult#*message_id\":}"
         messageID=${subSecondResult%%,\"from*}
 
@@ -168,7 +168,7 @@ if [ "$pubdate" != "$olddate" ] && [ "$result" != "" ] && [ "$result6" = "" ]; t
             echo $text >zz.txt
             sed -i -e 's/\r/\n/g' zz.txt
             text=$(sed -n '$p' zz.txt)
-            result=$(curl -g "https://api.telegram.org/bot$telegram_bot_token/editMessageText?chat_id=$telegram_chat_id&message_id=$messageID&text=$text")
+            result=$(curl -s -X POST "https://api.telegram.org/bot$telegram_bot_token/editMessageText" -d chat_id=$telegram_chat_id -d message_id=$messageID -d text="$text")
             aa="{\"ok\":false,\"error_code\":400,\"description\":\"Bad Request: message is not modified: specified new message content and reply markup are exactly the same as a current content and reply markup of the message\"}"
             bb="{\"ok\":false,\"error_code\":400,\"description\":\"Bad Request: message text is empty\"}"
             if [ "$result" == "$aa" ] || [ "$result" == "$bb" ]; then
@@ -182,6 +182,6 @@ if [ "$pubdate" != "$olddate" ] && [ "$result" != "" ] && [ "$result6" = "" ]; t
         done
         wait
     else
-        curl "https://api.telegram.org/bot$telegram_bot_token/sendMessage?chat_id=$telegram_chat_id&parse_mode=html&text=<b>BFD：Cookies 文件失效，请更新后重试</b>%0A%0A$videomessage"
+        curl -s -X POST "https://api.telegram.org/bot$telegram_bot_token/sendMessage" -d chat_id=$telegram_chat_id -d parse_mode=html -d text="<b>BFD：Cookies 文件失效，请更新后重试</b>%0A%0A$videomessage"
     fi
 fi
