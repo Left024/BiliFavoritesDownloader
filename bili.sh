@@ -79,9 +79,6 @@ if [ "$pubdate" != "$olddate" ] && [ "$result" != "" ] && [ "$result6" = "" ]; t
         echo $av >>"${scriptLocation}"BV.txt
         #获取视频清晰度以及大小信息
         stat=$($you -i -l -c "$scriptLocation"cookies.txt $link)
-        #获取最高清晰度format
-        subformat=${stat#*--format=}
-        format=${subformat%%\ \[URL\]*}
         #有几P视频
         count=$(echo $stat | awk -F'title' '{print NF-1}')
         #echo $count
@@ -105,7 +102,7 @@ if [ "$pubdate" != "$olddate" ] && [ "$result" != "" ] && [ "$result6" = "" ]; t
         #下载视频到指定位置（视频存储位置自行修改；you-get下载B站经常会出错，所以添加了出错重试代码）
         count=1
         while true; do
-            $you --format=$format -l -c "$scriptLocation"cookies.txt -o "$videoLocation$name" $link >z.txt #如果是邮件通知，删除 > z.txt
+            $you -l -c "$scriptLocation"cookies.txt -o "$videoLocation$name" $link >z.txt #如果是邮件通知，删除 > z.txt
             if [ $? -eq 0 ]; then
                 #下载完成
                 #重命名封面图
