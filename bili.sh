@@ -131,8 +131,8 @@ if [ "$pubdate" != "$olddate" ] && [ "$result" != "" ] && [ "$result6" = "" ]; t
                 #echo "$videomessage" | mail -s "BFD：下载完成" $mailAddress
                 curl -s -X POST "https://api.telegram.org/bot$telegram_bot_token/sendMessage" -d chat_id=$telegram_chat_id -d parse_mode=html -d text="<b>BFD：下载完成</b>%0A%0A$videomessage"
                 #上传至OneDrive 百度云
-                /usr/bin/rclone copy /root/Bilibili OneDrive:1tb/Bilibili
-                /usr/local/bin/BaiduPCS-Go upload /root/Bilibili /
+                /usr/bin/rclone copy "$videoLocation$name" OneDrive:
+                /usr/local/bin/BaiduPCS-Go upload "$videoLocation$name" /
                 #发送通知
                 #echo "$title" | mail -s "BFD：上传完成" $mailAddress #邮件方式
                 curl -s -X POST "https://api.telegram.org/bot$telegram_bot_token/sendMessage" -d chat_id=$telegram_chat_id -d parse_mode=html -d text="<b>BFD：上传完成</b>%0A%0A$title"
