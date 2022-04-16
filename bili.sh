@@ -102,10 +102,12 @@ if [ "$pubdate" != "$olddate" ] && [ "$result" != "" ] && [ "$result6" = "" ]; t
         curl -s -X POST "https://api.telegram.org/bot$telegram_bot_token/sendMessage" -d chat_id=$telegram_chat_id -d parse_mode=html -d text="<b>BFD：开始下载</b>%0A%0A$message"
         #下载视频到指定位置（视频存储位置自行修改；you-get下载B站经常会出错，所以添加了出错重试代码）
         count=1
+        echo "1" > ${scriptLocation}mark.txt
         while true; do
             $you -l -c "$scriptLocation"cookies.txt -o "$videoLocation$name" $link > "${scriptLocation}${cur_sec}.txt" #如果是邮件通知，删除 > "${scriptLocation}${cur_sec}.txt"
             if [ $? -eq 0 ]; then
                 #下载完成
+                echo "0" > ${scriptLocation}mark.txt
                 #重命名封面图
                 result1=$(echo $pname | grep "jpg")
                 if [ "$result1" != "" ]; then
@@ -165,15 +167,9 @@ if [ "$pubdate" != "$olddate" ] && [ "$result" != "" ] && [ "$result6" = "" ]; t
             sed -i -e 's/\r/\n/g' "${scriptLocation}${cur_sec}${cur_sec}.txt"
             text=$(sed -n '$p' "${scriptLocation}${cur_sec}${cur_sec}.txt")
             result=$(curl -s -X POST "https://api.telegram.org/bot$telegram_bot_token/editMessageText" -d chat_id=$telegram_chat_id -d message_id=$messageID -d text="$text")
-            aa="{\"ok\":false,\"error_code\":400,\"description\":\"Bad Request: message is not modified: specified new message content and reply markup are exactly the same as a current content and reply markup of the message\"}"
-            bb="{\"ok\":false,\"error_code\":400,\"description\":\"Bad Request: message text is empty\"}"
-            if [ "$result" == "$aa" ] || [ "$result" == "$bb" ]; then
-                #echo "break"
-                if [ "$ccount" != "10" ]; then
-                    ccount=$(($ccount + 1))
-                else
-                    break
-                fi
+            mark=$(cat ${scriptLocation}mark.txt)
+            if [ $mark -eq 0 ]; then
+                break
             fi
         done
         wait
